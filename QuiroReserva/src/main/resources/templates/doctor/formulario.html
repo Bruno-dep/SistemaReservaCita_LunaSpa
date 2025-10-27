@@ -1,0 +1,29 @@
+<div class="card" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="card-header bg-primary text-white">
+        <h4 th:text="${doctor.id == null ? 'Nuevo Doctor' : 'Editar Doctor'}"></h4>
+    </div>
+    <div class="card-body">
+
+        <form th:action="@{/doctores/guardar}" th:object="${doctor}" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre:</label>
+                <input type="text" class="form-control" th:field="*{nombre}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Especialidad:</label>
+                <input type="text" class="form-control" th:field="*{especialidad}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Teléfono:</label>
+                <input type="text" class="form-control" th:field="*{telefono}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="/doctores" class="btn btn-secondary">Cancelar</a>
+        </form>
+
+    </div>
+</div>
