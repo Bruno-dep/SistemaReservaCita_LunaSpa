@@ -1,4 +1,4 @@
-package com.example.QuiroReserva.config;
+package com.example.LunaSpa.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

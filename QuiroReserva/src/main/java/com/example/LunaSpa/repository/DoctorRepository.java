@@ -1,6 +1,6 @@
-package com.example.QuiroReserva.repository;
+package com.example.LunaSpa.repository;
 
-import com.example.QuiroReserva.model.Doctor;
+import com.example.LunaSpa.model.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {

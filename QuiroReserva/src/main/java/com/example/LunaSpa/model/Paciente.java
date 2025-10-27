@@ -1,4 +1,4 @@
-package com.example.QuiroReserva.model;
+package com.example.LunaSpa.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

@@ -1,13 +1,13 @@
-package com.example.QuiroReserva;
+package com.example.LunaSpa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class    QuiroReservaApplication {
+public class  LunaSpaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(QuiroReservaApplication.class, args);
+		SpringApplication.run(LunaSpaApplication.class, args);
 	}
 
 }

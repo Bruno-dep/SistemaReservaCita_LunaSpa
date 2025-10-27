@@ -1,6 +1,6 @@
-package com.example.QuiroReserva.repository;
+package com.example.LunaSpa.repository;
 
-import com.example.QuiroReserva.model.Paciente;
+import com.example.LunaSpa.model.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

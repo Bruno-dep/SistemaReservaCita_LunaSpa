@@ -1,9 +1,9 @@
-package com.example.QuiroReserva.service.service.impl;
+package com.example.LunaSpa.service.service.impl;
 
 
-import com.example.QuiroReserva.model.Paciente;
-import com.example.QuiroReserva.repository.PacienteRepository;
-import com.example.QuiroReserva.service.PacienteService;
+import com.example.LunaSpa.model.Paciente;
+import com.example.LunaSpa.repository.PacienteRepository;
+import com.example.LunaSpa.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

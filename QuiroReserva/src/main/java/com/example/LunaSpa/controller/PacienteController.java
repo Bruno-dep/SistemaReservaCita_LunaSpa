@@ -1,7 +1,7 @@
-package com.example.QuiroReserva.controller;
+package com.example.LunaSpa.controller;
 
-import com.example.QuiroReserva.model.Paciente;
-import com.example.QuiroReserva.service.PacienteService;
+import com.example.LunaSpa.model.Paciente;
+import com.example.LunaSpa.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,49 +34,43 @@ public class PacienteController {
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes,
                           Model model) {
-
         if (bindingResult.hasErrors()) {
             model.addAttribute("paciente", paciente);
+            model.addAttribute("error", "Por favor, corrige los errores en el formulario.");
             return "paciente/formulario";
         }
-
-        pacienteService.guardar(paciente);
-
-        String mensaje = (paciente.getId() == null)
-                ? "Paciente registrado correctamente"
-                : "Paciente actualizado correctamente";
-
-        redirectAttributes.addFlashAttribute("success", mensaje);
+        try {
+            pacienteService.guardar(paciente);
+            String mensaje = (paciente.getId() == null) ? "Paciente registrado correctamente" : "Paciente actualizado correctamente";
+            redirectAttributes.addFlashAttribute("success", mensaje);
+        } catch (Exception e) {
+            model.addAttribute("paciente", paciente);
+            model.addAttribute("error", "Error al guardar el paciente: " + e.getMessage());
+            return "paciente/formulario";
+        }
         return "redirect:/pacientes";
     }
 
     @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Long id, Model model,
-                         RedirectAttributes redirectAttributes) {
-
+    public String editar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Paciente paciente = pacienteService.buscarPorId(id);
         if (paciente == null) {
-            redirectAttributes.addFlashAttribute("error", "El paciente no existe");
+            redirectAttributes.addFlashAttribute("error", "El paciente no existe.");
             return "redirect:/pacientes";
         }
-
         model.addAttribute("paciente", paciente);
         return "paciente/formulario";
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id,
-                           RedirectAttributes redirectAttributes) {
-
+    public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Paciente paciente = pacienteService.buscarPorId(id);
         if (paciente == null) {
-            redirectAttributes.addFlashAttribute("error", "El paciente no existe");
-            return "redirect:/pacientes";
+            redirectAttributes.addFlashAttribute("error", "El paciente no existe.");
+        } else {
+            pacienteService.eliminar(id);
+            redirectAttributes.addFlashAttribute("success", "Paciente eliminado correctamente.");
         }
-
-        pacienteService.eliminar(id);
-        redirectAttributes.addFlashAttribute("success", "Paciente eliminado correctamente");
         return "redirect:/pacientes";
     }
-
 }

@@ -1,6 +1,6 @@
-package com.example.QuiroReserva.service;
+package com.example.LunaSpa.service;
 
-import com.example.QuiroReserva.model.Paciente;
+import com.example.LunaSpa.model.Paciente;
 import java.util.List;
 
 public interface PacienteService {
