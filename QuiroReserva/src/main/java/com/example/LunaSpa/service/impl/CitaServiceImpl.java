@@ -1,4 +1,4 @@
-package com.example.LunaSpa.service.impl;
+package com.example.LunaSpa.service.service.impl;
 
 import com.example.LunaSpa.model.Cita;
 import com.example.LunaSpa.repository.CitaRepository;
