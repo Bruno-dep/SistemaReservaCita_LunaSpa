@@ -12,21 +12,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class InicioController {
 
     @Autowired
+    private CitaService citaService;
+
+    @Autowired
     private PacienteService pacienteService;
 
     @Autowired
     private DoctorService doctorService;
 
-    @Autowired
-    private CitaService citaService;
-
     @GetMapping("/")
-    public String inicio(Model model) {
-        model.addAttribute("titulo", "Inicio - LunaSpa");
-        model.addAttribute("contenido", "inicio");
+    public String mostrarDashboard(Model model) {
+        model.addAttribute("titulo", "Dashboard - LunaSpa");
+        model.addAttribute("contenido", "dashboard");
         model.addAttribute("pacientesCount", pacienteService.listarTodos().size());
         model.addAttribute("doctoresCount", doctorService.listarTodos().size());
         model.addAttribute("citasCount", citaService.listarTodas().size());
+        model.addAttribute("listaCitas", citaService.listarTodas());
         return "layout";
+    }
+
+    @GetMapping("/login")
+    public String mostrarLogin() {
+        return "login";
     }
 }

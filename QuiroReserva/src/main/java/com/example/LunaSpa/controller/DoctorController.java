@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/doctores")
+@RequestMapping("/doctor")
 public class DoctorController {
 
     @Autowired
@@ -20,65 +20,29 @@ public class DoctorController {
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("doctores", doctorService.listarTodos());
-        model.addAttribute("titulo", "Doctores");
+        model.addAttribute("titulo", "Gestión de Doctores");
         model.addAttribute("contenido", "doctor/lista");
-        return "layout";
-    }
-
-    @GetMapping("/nuevo")
-    public String nuevo(Model model) {
         model.addAttribute("doctor", new Doctor());
-        model.addAttribute("titulo", "Nuevo Doctor");
-        model.addAttribute("contenido", "doctor/formulario");
         return "layout";
     }
 
-    @PostMapping
+    @PostMapping("/guardar")
     public String guardar(@Validated @ModelAttribute("doctor") Doctor doctor,
                           BindingResult result,
-                          RedirectAttributes redirectAttributes,
-                          Model model) {
+                          RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            model.addAttribute("titulo", "Formulario Doctor");
-            model.addAttribute("contenido", "doctor/formulario");
-            model.addAttribute("error", "Por favor, corrige los errores en el formulario.");
-            return "layout";
+            redirectAttributes.addFlashAttribute("error", "Error al guardar el doctor.");
+            return "redirect:/doctor";
         }
-        try {
-            doctorService.guardar(doctor);
-            String mensaje = (doctor.getId() == null) ? "Doctor registrado correctamente" : "Doctor actualizado correctamente";
-            redirectAttributes.addFlashAttribute("success", mensaje);
-        } catch (Exception e) {
-            model.addAttribute("titulo", "Formulario Doctor");
-            model.addAttribute("contenido", "doctor/formulario");
-            model.addAttribute("error", "Error al guardar el doctor: " + e.getMessage());
-            return "layout";
-        }
-        return "redirect:/doctores";
-    }
-
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        Doctor doctor = doctorService.buscarPorId(id);
-        if (doctor == null) {
-            redirectAttributes.addFlashAttribute("error", "El doctor no existe.");
-            return "redirect:/doctores";
-        }
-        model.addAttribute("doctor", doctor);
-        model.addAttribute("titulo", "Editar Doctor");
-        model.addAttribute("contenido", "doctor/formulario");
-        return "layout";
+        doctorService.guardar(doctor);
+        redirectAttributes.addFlashAttribute("success", "Doctor registrado correctamente.");
+        return "redirect:/doctor";
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Doctor doctor = doctorService.buscarPorId(id);
-        if (doctor == null) {
-            redirectAttributes.addFlashAttribute("error", "El doctor no existe.");
-        } else {
-            doctorService.eliminar(id);
-            redirectAttributes.addFlashAttribute("success", "Doctor eliminado correctamente.");
-        }
-        return "redirect:/doctores";
+        doctorService.eliminar(id);
+        redirectAttributes.addFlashAttribute("success", "Doctor eliminado correctamente.");
+        return "redirect:/doctor";
     }
 }

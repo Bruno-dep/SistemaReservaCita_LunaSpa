@@ -1,6 +1,8 @@
 package com.example.LunaSpa.controller;
 
 import com.example.LunaSpa.model.Cita;
+import com.example.LunaSpa.model.Paciente;
+import com.example.LunaSpa.model.Doctor;
 import com.example.LunaSpa.service.CitaService;
 import com.example.LunaSpa.service.PacienteService;
 import com.example.LunaSpa.service.DoctorService;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/citas")
+@RequestMapping("/cita")
 public class CitaController {
 
     @Autowired
@@ -28,58 +30,52 @@ public class CitaController {
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("listaCitas", citaService.listarTodas());
-        return "cita/lista";
-    }
-
-    @GetMapping("/nuevo")
-    public String formularioNuevo(Model model) {
+        model.addAttribute("titulo", "Gestión de Citas");
+        model.addAttribute("contenido", "cita/lista");
         model.addAttribute("cita", new Cita());
         model.addAttribute("pacientes", pacienteService.listarTodos());
         model.addAttribute("doctores", doctorService.listarTodos());
-        return "cita/formulario";
+        return "layout";
     }
 
-    @PostMapping
-    public String guardar(@Validated @ModelAttribute("cita") Cita cita, BindingResult result,
-                          Model model, RedirectAttributes redirectAttributes) {
+    @PostMapping("/guardar")
+    public String guardar(@Validated @ModelAttribute("cita") Cita cita,
+                          BindingResult result,
+                          @RequestParam("paciente.id") Long pacienteId,
+                          @RequestParam("doctor.id") Long doctorId,
+                          RedirectAttributes redirectAttributes,
+                          Model model) {
+
         if (result.hasErrors()) {
-            model.addAttribute("pacientes", pacienteService.listarTodos());
-            model.addAttribute("doctores", doctorService.listarTodos());
-            return "cita/formulario";
+            redirectAttributes.addFlashAttribute("error", "Error en el formulario de la cita.");
+            return "redirect:/cita";
         }
+
+        Paciente paciente = pacienteService.buscarPorId(pacienteId);
+        Doctor doctor = doctorService.buscarPorId(doctorId);
+
+        if (paciente == null || doctor == null) {
+            redirectAttributes.addFlashAttribute("error", "Paciente o doctor seleccionado inválido.");
+            return "redirect:/cita";
+        }
+
+        cita.setPaciente(paciente);
+        cita.setDoctor(doctor);
+
         try {
             citaService.guardar(cita);
-            redirectAttributes.addFlashAttribute("success", "Cita guardada correctamente.");
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("pacientes", pacienteService.listarTodos());
-            model.addAttribute("doctores", doctorService.listarTodos());
-            return "cita/formulario";
+            redirectAttributes.addFlashAttribute("success", "Cita registrada correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al guardar la cita: " + e.getMessage());
         }
-        return "redirect:/citas";
-    }
 
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        Cita cita = citaService.buscarPorId(id);
-        if (cita == null) {
-            redirectAttributes.addFlashAttribute("error", "La cita no existe.");
-            return "redirect:/citas";
-        }
-        model.addAttribute("cita", cita);
-        model.addAttribute("pacientes", pacienteService.listarTodos());
-        model.addAttribute("doctores", doctorService.listarTodos());
-        return "cita/formulario";
+        return "redirect:/cita";
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        if (citaService.buscarPorId(id) == null) {
-            redirectAttributes.addFlashAttribute("error", "La cita no existe.");
-        } else {
-            citaService.eliminar(id);
-            redirectAttributes.addFlashAttribute("success", "Cita eliminada correctamente.");
-        }
-        return "redirect:/citas";
+        citaService.eliminar(id);
+        redirectAttributes.addFlashAttribute("success", "Cita eliminada correctamente.");
+        return "redirect:/cita";
     }
 }
