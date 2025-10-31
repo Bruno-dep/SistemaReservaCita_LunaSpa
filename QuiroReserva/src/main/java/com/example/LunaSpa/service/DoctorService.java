@@ -8,7 +8,8 @@ public interface DoctorService {
     Doctor guardar(Doctor doctor);
     Doctor buscarPorId(Long id);
     void eliminar(Long id);
-}
+    Doctor obtenerPorId(Long id);
+}   
 
 
 

@@ -8,6 +8,7 @@ public interface PacienteService {
     List<Paciente> listarTodos();
     Paciente guardar(Paciente paciente);
     void eliminar(Long id);
+    Paciente obtenerPorId(Long id);
 }
 
 

@@ -23,6 +23,10 @@ public class DoctorServiceImpl implements DoctorService {
     public Doctor guardar(Doctor doctor) {
         return doctorRepository.save(doctor);
     }
+    @Override
+    public Doctor obtenerPorId(Long id) {
+        return doctorRepository.findById(id).orElse(null);
+    }
 
     @Override
     public Doctor buscarPorId(Long id) {

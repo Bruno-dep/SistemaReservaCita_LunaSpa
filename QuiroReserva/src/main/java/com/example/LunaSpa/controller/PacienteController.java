@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @Controller
 @RequestMapping("/paciente")
@@ -39,6 +41,20 @@ public class PacienteController {
         redirectAttributes.addFlashAttribute("success", "Paciente registrado correctamente.");
         return "redirect:/paciente";
     }
+
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Paciente paciente = pacienteService.obtenerPorId(id);
+        if (paciente == null) {
+            redirectAttributes.addFlashAttribute("error", "Paciente no encontrado.");
+            return "redirect:/paciente";
+        }
+        model.addAttribute("paciente", paciente);
+        model.addAttribute("titulo", "Editar Paciente");
+        model.addAttribute("contenido", "paciente/editar");
+        return "layout";
+    }
+    
 
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {

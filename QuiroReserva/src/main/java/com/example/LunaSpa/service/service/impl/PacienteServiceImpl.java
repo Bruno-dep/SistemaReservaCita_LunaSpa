@@ -35,4 +35,9 @@ public class PacienteServiceImpl implements PacienteService {
         return pacienteRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public Paciente obtenerPorId(Long id) {
+        return pacienteRepository.findById(id).orElse(null);
+    }
+
 }

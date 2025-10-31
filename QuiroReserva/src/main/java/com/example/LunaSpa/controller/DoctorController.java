@@ -25,7 +25,6 @@ public class DoctorController {
         model.addAttribute("doctor", new Doctor());
         return "layout";
     }
-    //te manda saludos vilma,esta con ella en este momento? no , me la encontre plan 1:30,, ahora me ha escrito wsp,uhhhhh ay tencion mano
 
     @PostMapping("/guardar")
     public String guardar(@Validated @ModelAttribute("doctor") Doctor doctor,
@@ -38,6 +37,19 @@ public class DoctorController {
         doctorService.guardar(doctor);
         redirectAttributes.addFlashAttribute("success", "Doctor registrado correctamente.");
         return "redirect:/doctor";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Doctor doctor = doctorService.obtenerPorId(id);
+        if (doctor == null) {
+            redirectAttributes.addFlashAttribute("error", "Doctor no encontrado.");
+            return "redirect:/doctor";
+        }
+        model.addAttribute("doctor", doctor);
+        model.addAttribute("titulo", "Editar Doctor");
+        model.addAttribute("contenido", "doctor/editar");
+        return "layout";
     }
 
     @GetMapping("/eliminar/{id}")

@@ -3,7 +3,6 @@ package com.example.LunaSpa;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -12,9 +11,6 @@ public class LunaSpaApplication implements CommandLineRunner {
 
     @Autowired
     private Environment env;
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     public static void main(String[] args) {
         SpringApplication.run(LunaSpaApplication.class, args);

@@ -24,6 +24,8 @@
 <body>
 <div class="login-box shadow">
     <h3 class="mb-4 text-primary fw-bold">Luna Spa</h3>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <form th:action="@{/login}" method="post">
         <div class="mb-3">
             <input type="text" name="username" class="form-control" placeholder="Usuario" required/>
