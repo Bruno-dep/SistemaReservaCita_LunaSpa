@@ -32,7 +32,10 @@ public class Cita {
     @NotNull(message = "La duración es obligatoria")
     private Integer duracion; // En minutos
 
+    @NotNull(message = "El estado es obligatorio")
     private String estado; // PENDIENTE, CONFIRMADA, CANCELADA
 
     private String notas; // Opcional
+
+    //cambio
 }
