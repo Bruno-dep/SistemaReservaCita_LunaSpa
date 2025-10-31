@@ -1,0 +1,73 @@
+<div xmlns:th="http://www.thymeleaf.org">
+    <h2 class="fw-bold mb-4 text-primary">Dashboard</h2>
+
+    <!-- Tarjetas resumen -->
+    <div class="row mb-4 text-center">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-primary">
+                <div class="card-body">
+                    <h5 class="text-primary">Citas Hoy</h5>
+                    <p class="display-6 fw-bold" th:text="${citasHoy}">10</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-success">
+                <div class="card-body">
+                    <h5 class="text-success">Pacientes Activos</h5>
+                    <p class="display-6 fw-bold" th:text="${pacientesCount}">156</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-warning">
+                <div class="card-body">
+                    <h5 class="text-warning">Pendientes</h5>
+                    <p class="display-6 fw-bold" th:text="${pendientesCount}">3</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendario -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h4 class="fw-bold mb-3">Calendario de Citas</h4>
+            <div id="calendar" style="max-width: 900px; margin: auto;"></div>
+        </div>
+    </div>
+
+    <!-- Próximas citas -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="fw-bold">Próximas Citas</h4>
+            <ul class="list-group mt-3">
+                <li class="list-group-item" th:each="cita : ${listaCitas}">
+                    <strong th:text="${cita.paciente.nombre}"></strong> -
+                    <span th:text="${cita.doctor.nombre}"></span> |
+                    <em th:text="${#temporals.format(cita.fechaHora, 'dd/MM/yyyy HH:mm')}"></em>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        if (calendarEl) {
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: 450,
+                locale: 'es',
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [] // luego se cargarán desde la base de datos
+            });
+            calendar.render();
+        }
+    });
+</script>

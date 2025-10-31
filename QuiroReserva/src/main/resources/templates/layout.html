@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">LunaSpa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+</head>
+<body>
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="bg-primary text-white p-3 vh-100" style="width: 250px;">
+        <h3 class="fw-bold mb-4 text-center">LunaSpa</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="/" class="nav-link text-white">🏠 Dashboard</a></li>
+            <li class="nav-item"><a href="/paciente" class="nav-link text-white">👥 Pacientes</a></li>
+            <li class="nav-item"><a href="/doctor" class="nav-link text-white">🩺 Doctores</a></li>
+            <li class="nav-item"><a href="/cita" class="nav-link text-white">📅 Citas</a></li>
+            <li class="nav-item mt-auto"><a href="/logout" class="nav-link text-warning fw-bold">Cerrar sesión</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido -->
+    <div class="flex-grow-1 p-4 bg-light">
+        <div th:replace="${contenido}"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
